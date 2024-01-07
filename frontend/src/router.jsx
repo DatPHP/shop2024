@@ -3,9 +3,11 @@ import Login from './pages/Login';
 import About from './pages/About';
 import Profile from './pages/Profile';
 import Register from './pages/Register';
-import Product from './pages/Product';
 import ProtectedLayout from './components/ProtectedLayout';
 import GuestLayout from './components/GuestLayout';
+import ListProduct from './components/product/list.component';
+import CreateProduct from './components/product/create.component';
+import EditProduct from './components/product/edit.component';
 
 const router = createBrowserRouter([
 	{
@@ -36,7 +38,15 @@ const router = createBrowserRouter([
 			},
 			{
 				path: '/product',
-				element: <Product />,
+				element: <ListProduct />,
+			},
+			{
+				path: '/product/create',
+				element: <CreateProduct />,
+			},
+			{
+				path: '/product/edit/:id',
+				element: <EditProduct />,
 			},
 		],
 	},

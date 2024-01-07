@@ -9,12 +9,16 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"axios": "^1.6.4",
+		"@material-tailwind/react": "^2.1.8",
+		"axios": "^1.6.5",
+		"bootstrap": "^5.3.2",
 		"flowbite": "^1.8.1",
 		"flowbite-react": "^0.3.8",
 		"react": "^18.2.0",
+		"react-bootstrap": "^2.9.2",
 		"react-dom": "^18.2.0",
-		"react-router-dom": "^6.21.1"
+		"react-router-dom": "^6.21.1",
+		"sweetalert2": "^11.10.2"
 	},
 	"devDependencies": {
 		"@types/react": "^18.0.27",
