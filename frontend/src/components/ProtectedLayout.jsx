@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import axios from '../axios';
@@ -6,7 +6,26 @@ import { useAuth } from '../contexts/AuthContext';
 
 export default function DefaultLayout() {
 	const { user, setUser } = useAuth();
+	const [isOpen, setOpen] = useState(false);
+	const [isDown, setDown] = useState(false);
+	const [isShow, setShow] = useState(false);
+	const [isLoad, setLoad] = useState(false);
 
+	const handleDropDown = () => {
+		setOpen(!isOpen);
+	};
+	const handleExpand = () => {
+		setDown(!isDown);
+	};
+	const handleMenu = () => {
+		setShow(!isShow);
+	};
+	const handleSidebar = () => {
+		setLoad(false);
+	};
+	const closeSidebar = () => {
+		setLoad(true);
+	};
 	// check if user is logged in or not from server
 	useEffect(() => {
 		(async () => {
@@ -50,16 +69,25 @@ export default function DefaultLayout() {
 						<span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Shop2024</span>
 					</a>
 					<div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-						<button id="dropdownInformationButton" data-dropdown-toggle="dropdownInformation"
+						<button
+							id="dropdownInformationButton"
+							data-dropdown-toggle="dropdownInformation"
 							className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-							type="button">
+							type="button"
+							onClick={handleDropDown}
+						>
 							<span className="sr-only">Open user menu</span>
 							<div className="relative">
 								<img className="w-10 h-10 rounded-full" src="../src/assets/img/shop2024.png" alt="user photo" />
 								<span className="top-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
 							</div>
 						</button>
-						<div id="dropdownInformation" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+						<div
+							id="dropdownInformation"
+							className={`absolute z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600 ${isOpen ? "block" : "hidden"
+								}`}
+							style={{ transform: 'translate(-100px, 148px)' }}
+						>
 							<div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
 								<div>Bonnie Green</div>
 								<div className="font-medium truncate">name@flowbite.com</div>
@@ -84,14 +112,25 @@ export default function DefaultLayout() {
 							</div>
 						</div>
 
-						<button data-collapse-toggle="navbar-user" type="button" className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-user" aria-expanded="false">
+						<button
+							data-collapse-toggle="navbar-user"
+							type="button"
+							className="inline-flex items-center  p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg  hover:bg-gray-100 md:hidden focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+							aria-controls="navbar-user"
+							aria-expanded="false"
+							onClick={handleMenu}
+						>
 							<span className="sr-only">Open main menu</span>
 							<svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
 								<path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
 							</svg>
 						</button>
 					</div>
-					<div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
+					<div
+						className={`items-center justify-between w-full md:flex md:w-auto md:order-1 ${isShow ? "block" : "hidden"
+							}`}
+						id="navbar-user"
+					>
 						<ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
 							<li>
 								<NavLink
@@ -130,14 +169,28 @@ export default function DefaultLayout() {
 					</div>
 				</div>
 			</nav>
-			<button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+			<button
+				data-drawer-target="sidebar-multi-level-sidebar"
+				data-drawer-toggle="sidebar-multi-level-sidebar"
+				aria-controls="sidebar-multi-level-sidebar"
+				type="button"
+				onClick={handleSidebar}
+				className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
 				<span className="sr-only">Open sidebar</span>
 				<svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 					<path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
 				</svg>
 			</button>
-			<aside id="sidebar-multi-level-sidebar" className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+			<aside id="sidebar-multi-level-sidebar"
+				className={`top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 ${isLoad ? "hidden" : "fixed"
+					}`}
+				aria-label="Sidebar">
 				<div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+					<div className="flex justify-end cursor-pointer md:hidden"
+						onClick={closeSidebar}
+					>
+						<svg height="40" viewBox="0 0 48 48" width="40" xmlns="http://www.w3.org/2000/svg"><path d="M24 4c-11.05 0-20 8.95-20 20s8.95 20 20 20 20-8.95 20-20-8.95-20-20-20zm10 27.17l-2.83 2.83-7.17-7.17-7.17 7.17-2.83-2.83 7.17-7.17-7.17-7.17 2.83-2.83 7.17 7.17 7.17-7.17 2.83 2.83-7.17 7.17 7.17 7.17z" /><path d="M0 0h48v48h-48z" fill="none" /></svg>
+					</div>
 					<ul className="space-y-2 font-medium">
 						<li>
 							<a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -149,27 +202,36 @@ export default function DefaultLayout() {
 							</a>
 						</li>
 						<li>
-							<button type="button" className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+							<button
+								type="button"
+								className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+								aria-controls="dropdown-example"
+								data-collapse-toggle="dropdown-example"
+								onClick={handleExpand}
+							>
 								<svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 21">
 									<path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
 								</svg>
-								<span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">E-commerce</span>
+								<span
+									className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">E-commerce</span>
 								<svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
 									<path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
 								</svg>
 							</button>
-							<ul id="dropdown-example" className="hidden py-2 space-y-2">
-
+							<ul id="dropdown-example"
+								className={`py-2 space-y-2 ${isDown ? "block" : "hidden"
+									}`}
+							>
 								<li>
-								<NavLink
-									to="/product"
-									className={({ isActive }) =>
-										isActive
-											? ' flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group active:bg-gray-100 dark:text-white dark:active:bg-gray-700'
-											: ' flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
-									}>
-									Product
-								</NavLink>
+									<NavLink
+										to="/product"
+										className={({ isActive }) =>
+											isActive
+												? ' flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group active:bg-gray-100 dark:text-white dark:active:bg-gray-700'
+												: ' flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
+										}>
+										Product
+									</NavLink>
 
 									{/* <a href="#" className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Products</a> */}
 								</li>
@@ -208,19 +270,19 @@ export default function DefaultLayout() {
 							</a>
 						</li>
 						<li>
-						         <NavLink
-									to="/product"
-									className={({ isActive }) =>
-										isActive
-											? 'block flex items-center py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white'
-											: 'block flex items-center py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 dark:text-gray-400 md:dark:hover:text-white'
-									}>
-										<svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
+							<NavLink
+								to="/product"
+								className={({ isActive }) =>
+									isActive
+										? 'block flex items-center py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white'
+										: 'block flex items-center py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 dark:text-gray-400 md:dark:hover:text-white'
+								}>
+								<svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
 									<path d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z" />
 								</svg>
-									<span className="flex-1 ms-3 whitespace-nowrap">Products</span>
-								</NavLink>
-{/* 
+								<span className="flex-1 ms-3 whitespace-nowrap">Products</span>
+							</NavLink>
+							{/* 
 
 <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 								<svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
@@ -230,7 +292,7 @@ export default function DefaultLayout() {
 							</a>
 
 */}
-							
+
 						</li>
 						<li>
 							<a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -253,16 +315,12 @@ export default function DefaultLayout() {
 					</ul>
 				</div>
 			</aside>
-
 			<div className="p-4 sm:ml-64 overflow-y-auto h-90">
 				<main className="container flex justify-center flex-col items-center mt-5 mb-5">
 					<Outlet />
 				</main>
 			</div>
-			<footer className="fixed bottom-0 right-0 left-0 p-4 sm:ml-60 bg-white border-t border-gray-200 shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 dark:border-gray-600">
-				<span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="https://flowbite.com/" className="hover:underline">Flowbite™</a>. All Rights Reserved.
-				</span>
-			</footer>
+			<script src="node_modules/flowbite/dist/flowbite.min.js"></script>
 		</>
 	);
 }
