@@ -154,6 +154,19 @@ export default function DefaultLayout() {
 									Product
 								</NavLink>
 							</li>
+
+							<li>
+								<NavLink
+									to="/category"
+									className={({ isActive }) =>
+										isActive
+											? 'block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white'
+											: 'block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 dark:text-gray-400 md:dark:hover:text-white'
+									}>
+									Category
+								</NavLink>
+							</li>
+
 							<li>
 								<NavLink
 									to="/about"
@@ -320,7 +333,7 @@ export default function DefaultLayout() {
 					<Outlet />
 				</main>
 			</div>
-			<script src="node_modules/flowbite/dist/flowbite.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.js" integrity="sha512-BJ/5sR2hFxQTKin/55JQCcMTObShDBAmVjL/3NR/MVcrhyOazJjAgvROem03+HYyGw16SVdSfoWCFGr9syxAKA==" crossOrigin="anonymous" referrerPolicy="no-referrer"></script>
 		</>
 	);
 }

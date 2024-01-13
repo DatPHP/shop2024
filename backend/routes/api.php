@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
+
 
 
 /*
@@ -26,3 +28,9 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
     Route::resource('products',ProductController::class);
+    Route::resource('categories', CategoryController::class);
+    
+    Route::get('/allcategory', [CategoryController::class, 'allCategory']);
+    Route::any('category/create', [CategoryController::class, 'createCategory'])
+    ->name('createCategor');
+
