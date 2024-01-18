@@ -10,6 +10,8 @@ export default function DefaultLayout() {
 	const [isDown, setDown] = useState(false);
 	const [isShow, setShow] = useState(false);
 	const [isLoad, setLoad] = useState(false);
+	const [fullname, setFullname] = useState('');
+	const [email, setEmail] = useState('');
 
 	const handleDropDown = () => {
 		setOpen(!isOpen);
@@ -44,6 +46,15 @@ export default function DefaultLayout() {
 	}, []);
 
 	// if user is not logged in, redirect to login page
+	useEffect(() => {
+		if (user) {
+			console.log(user.name);
+			console.log(user.email);
+			setFullname(user.name);
+			setEmail(user.email);
+		}
+    }, []);
+
 	if (!user) {
 		return <Navigate to="/" />;
 	}
@@ -89,8 +100,8 @@ export default function DefaultLayout() {
 							style={{ transform: 'translate(-100px, 148px)' }}
 						>
 							<div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-								<div>Bonnie Green</div>
-								<div className="font-medium truncate">name@flowbite.com</div>
+								<div> { fullname ? fullname : 'Bonnie Green' }</div>
+								<div className="font-medium truncate">{ email ? email : 'name@flowbite.com' }</div>
 							</div>
 							<ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownInformationButton">
 								<li>

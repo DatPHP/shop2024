@@ -12,7 +12,7 @@ import CreateProduct from './components/product/create.component';
 import EditProduct from './components/product/edit.component';
 
 import CreateCategory from './components/category/create.component';
-
+import EditCategory from './components/category/edit.component';
 
 const router = createBrowserRouter([
 	{
@@ -41,6 +41,9 @@ const router = createBrowserRouter([
 				path: '/profile',
 				element: <Profile />,
 			},
+
+
+			
 			{
 				path: '/product',
 				element: <ListProduct />,
@@ -62,6 +65,10 @@ const router = createBrowserRouter([
 			{
 				path: '/category/create',
 				element: <CreateCategory />,
+			},
+			{
+				path: '/category/edit/:id',
+				element: <EditCategory />,
 			},
 
 			

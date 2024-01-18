@@ -12,7 +12,7 @@ import axios from 'axios'
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom'
 
-export default function CreateProduct() {
+export default function CreateCategories() {
   const navigate = useNavigate();
 
   const [name, setName] = useState("")

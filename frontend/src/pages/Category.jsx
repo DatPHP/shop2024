@@ -92,7 +92,7 @@ export default function Category() {
                                             {row.slug}
                                         </td>
                                         <td className="px-6 py-4">
-                                            {row.parent_id}
+                                            {row?.parent?.name}
                                         </td>
                                         <td className="px-6 py-4 text-right">
                                             <div className="flex w-max gap-4">

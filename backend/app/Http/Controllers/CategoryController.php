@@ -47,6 +47,19 @@ class CategoryController extends Controller
         ]);
     }
 
+     /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Category  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Category $category)
+    {
+        return response()->json([
+            'category'=>$category
+        ]);
+    }
+
 
     /**
      * Display a listing of the resource.
@@ -55,8 +68,8 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::all();
-
+      //  $categories = Category::with('parent')->whereNull('parent_id')->get();
+        $categories = Category::with('parent')->get();
         return $categories;
     }
 
@@ -79,16 +92,24 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+
+       
+        $request->validate([
+            'name'      => 'required',
+            'slug'      => 'required|unique:categories',
+            'parent_id' => 'nullable|numeric'
+        ]);
+
         try{
 
         $category = new Category;
         $category->name = $request->name;
         $category->slug = $request->slug;
-        $category->parent_id = $request->parent_category ? $request->parent_category : 0;
+        $category->parent_id = $request->parent_id ? $request->parent_id : 0;
 
         if ($category->save() ) {
             return response()->json([
-                'message'=>'Product Created Successfully!!'
+                'message'=>'Category Created Successfully!!'
             ]);
         }
 
@@ -96,7 +117,7 @@ class CategoryController extends Controller
 
             \Log::error($e->getMessage());
             return response()->json([
-                'message'=>'Something goes wrong while creating a product!!'
+                'message'=>'Something goes wrong while creating a cca!!'
             ],500);
         }
     }
@@ -120,16 +141,36 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CreateCategoryRequest $request, Category $category)
+    public function update(Request $request, $id)
     {
-        $category->name = $request->name;
-        $category->parent_id = $request->parent_category ? $request->parent_category : 0;
+      
+        $request->validate([
+            'name'      => 'required',
+            'slug'      => 'required',
+            'parent_id' => 'nullable'
+        ]);
 
-        if ($category->save() ) {
-            return redirect()->route('categories.index')->with(['success' => 'Category successfully updated.']);
+        try{
+            $category = Category::where('id', $id)->first();
+
+            $category->fill($request->post())->update();
+            
+            /*
+            $category->name = $request->name;
+            $category->slug = $request->slug;
+            $category->parent_id = $request->parent_id ? $request->parent_id : 0;
+            $category->save();
+            */
+
+            return response()->json([
+                'message'=>'Category Updated Successfully!!'
+            ]);
+        }catch(\Exception $e){
+            \Log::error($e->getMessage());
+            return response()->json([
+                'message'=>'Something goes wrong while updating a category!!'
+            ],500);
         }
-
-        return redirect()->back()->with(['fail' => 'Unable to update category.']);
     }
 
     /**
