@@ -62,7 +62,7 @@ export default function EditCategory() {
     formData.append('_method', 'PATCH');
     formData.append('name', name)
     formData.append('slug', slug)
-    formData.append('parent_id', parentCategory)
+    formData.append('parent_id', parentCategory ? parentCategory : 0 )
    
    
 
