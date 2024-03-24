@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-
-function Slider() {
+function Sliderbanner() {
 	return (
 		<>
 			<section className="section-slide">
 				<div className="wrap-slick1">
 					<div className="slick1">
-						<div className="item-slick1 slider-general">
+						<div className="item-slick1 slider-general-1">
 							<div className="container h-full">
 								<div className="flex-col-l-m h-full p-t-100 p-b-30 respon5">
 									<div className="layer-slick1 animated visible-false" data-appear="fadeInDown" data-delay="0">
@@ -85,4 +84,4 @@ function Slider() {
 	)
 }
 
-export default Slider
+export default Sliderbanner

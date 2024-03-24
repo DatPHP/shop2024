@@ -316,7 +316,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 /*------------------------------------------------------------------
 [ Slider ]*/
 
-.slider-general {
+.slider-general-1 {
   background-image: url(../images/slide-01.jpg);
 }
 
@@ -326,6 +326,28 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 
 .slider-general-3 {
   background-image: url(../images/slide-03.jpg);
+}
+
+
+.img-body img {
+  display: flex;
+  margin: 0 auto;
+  width: 1349px;
+  position: relative;
+  left: -2698px;
+  top: 0px;
+  z-index: 999;
+  opacity: 1;
+  height: calc(100vh - 40px);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center
+}
+
+.img-body {
+  width: 1349px;
+  aspect-ratio: 1/1;
+  outline-color: red;
 }
 
 /*------------------------------------------------------------------
