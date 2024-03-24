@@ -313,6 +313,44 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 }
 
 
+/*------------------------------------------------------------------
+[ Slider ]*/
+
+.slider-general {
+  background-image: url(../images/slide-01.jpg);
+}
+
+.slider-general-2 {
+  background-image: url(../images/slide-02.jpg);
+}
+
+.slider-general-3 {
+  background-image: url(../images/slide-03.jpg);
+}
+
+/*------------------------------------------------------------------
+[ Product ]*/
+
+.brand-product-1 {
+  color: #222
+}
+
+.brand-product-2 {
+  color: #4272d7
+}
+.brand-product-3 {
+  color: #b3b3b3
+}
+.brand-product-4 {
+  color: #00ad5f
+}
+.brand-product-5 {
+  color: #fa4251
+}
+.brand-product-6 {
+  color: #aaa;
+}
+
 
 /*------------------------------------------------------------------
 [ Logo ]*/
