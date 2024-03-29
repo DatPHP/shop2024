@@ -1,9 +1,33 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+function SampleNextArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", background: "#42464a", right: 25 + 'px' }}
+        onClick={onClick}
+      />
+    );
+  }
+  
+  function SamplePrevArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", background: "#42464a", left: 25 + 'px', zIndex: 1 }}
+        onClick={onClick}
+      />
+    );
+  }
+
 export default function SimpleSlider() {
+    const [nav1, setNav1] = useState(null);
+    let sliderRef1 = useRef(null);
     const settings = {
         dots: true,
         speed: 500,
@@ -11,7 +35,9 @@ export default function SimpleSlider() {
         slidesToScroll: 1,
         infinite: true,
         autoplay: true,
-        autoplaySpeed: 500,
+        autoplaySpeed: 1000,
+        nextArrow: <SampleNextArrow />,
+        prevArrow: <SamplePrevArrow />
     };
 
     const AfroStyles = [
@@ -41,11 +67,17 @@ export default function SimpleSlider() {
 
     ];
 
+    useEffect(() => {
+      setNav1(sliderRef1);
+    }, []);
+
     return (
         <section className="section-slide">
             <div className="wrap-slick1">
                 <div className="slick1">
-                    <Slider {...settings}>
+                    <Slider {...settings}
+                    asNavFor={nav1} ref={slider => (sliderRef1 = slider)}
+                    >
                         {AfroStyles.map((item) => (
                             <div className="item-slick1" key={item.id}>
                                 <div className="img-body">
