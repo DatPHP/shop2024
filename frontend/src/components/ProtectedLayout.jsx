@@ -206,7 +206,7 @@ export default function DefaultLayout() {
 				</svg>
 			</button>
 			<aside id="sidebar-multi-level-sidebar"
-				className={`top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 ${isLoad ? "hidden" : "fixed"
+				className={`top-16 left-0 z-40 w-64 h-[calc(100vh-4rem)] transition-transform -translate-x-full sm:translate-x-0 ${isLoad ? "hidden" : "fixed"
 					}`}
 				aria-label="Sidebar">
 				<div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
