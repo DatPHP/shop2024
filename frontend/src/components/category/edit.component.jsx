@@ -59,7 +59,7 @@ export default function EditCategory() {
   const editCategory = async (e) => {
     e.preventDefault();
     const formData = new FormData()
-    formData.append('_method', 'PATCH');
+    formData.append('_method', 'PUT');
     formData.append('name', name)
     formData.append('slug', slug)
     formData.append('parent_id', parentCategory ? parentCategory : 0 )

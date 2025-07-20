@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-export default function EditUser() {
+export default function EditProduct() {
   const navigate = useNavigate();
 
   const { id } = useParams()
@@ -68,7 +68,7 @@ export default function EditUser() {
   const updateProduct = async (e) => {
     e.preventDefault();
     const formData = new FormData()
-    formData.append('_method', 'PATCH');
+    formData.append('_method', 'PUT');
     formData.append('id', id);
     formData.append('title', title)
     formData.append('description', description)

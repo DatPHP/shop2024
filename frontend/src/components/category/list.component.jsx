@@ -1,24 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@material-tailwind/react";
-import axios from 'axios';
+import axios from '../../axios';
 import Swal from 'sweetalert2'
 
 export default function List() {
 
-    const [products, setProducts] = useState([])
+    const [categories, setCategories] = useState([])
 
     useEffect(() => {
-        fetchProducts()
+        fetchCategories()
     }, [])
 
-    const fetchProducts = async () => {
-        await axios.get(`http://localhost:8000/api/products`).then(({ data }) => {
-            setProducts(data)
-        })
+    const fetchCategories = async () => {
+        try {
+            const response = await axios.get('/categories');
+            setCategories(response.data);
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+            Swal.fire({
+                text: 'Failed to fetch categories',
+                icon: "error"
+            });
+        }
     }
 
-    const deleteProduct = async (id) => {
+    const deleteCategory = async (id) => {
         const isConfirm = await Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -35,25 +42,33 @@ export default function List() {
             return;
         }
 
-        await axios.delete(`http://localhost:8000/api/products/${id}`).then(({ data }) => {
+        try {
+            const response = await axios.delete(`/categories/${id}`);
+            if (response.data.success) {
+                Swal.fire({
+                    icon: "success",
+                    text: response.data.message
+                });
+                fetchCategories();
+            } else {
+                Swal.fire({
+                    text: response.data.message || 'Failed to delete category',
+                    icon: "error"
+                });
+            }
+        } catch (error) {
             Swal.fire({
-                icon: "success",
-                text: data.message
-            })
-            fetchProducts()
-        }).catch(({ response: { data } }) => {
-            Swal.fire({
-                text: data.message,
+                text: error.response?.data?.message || 'Failed to delete category',
                 icon: "error"
-            })
-        })
+            });
+        }
     }
 
     return (
         <>
             <div className='flex justify-start'>
                 <Link
-                    to="/product/create"
+                    to="/category/create"
                     className="font-medium text-primary-600 hover:underline dark:text-primary-500">
                     Create
                 </Link>
@@ -64,11 +79,11 @@ export default function List() {
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" className="px-6 py-3">
-                                    Product name
+                                    Category name
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     <div className="flex items-center">
-                                        Color
+                                        Slug
                                         <a href="#"><svg className="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
                                         </svg></a>
@@ -76,23 +91,7 @@ export default function List() {
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     <div className="flex items-center">
-                                        Category
-                                        <a href="#"><svg className="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                                        </svg></a>
-                                    </div>
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    <div className="flex items-center">
-                                        Price
-                                        <a href="#"><svg className="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                                        </svg></a>
-                                    </div>
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    <div className="flex items-center">
-                                        Status
+                                        Parent Category
                                         <a href="#"><svg className="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
                                         </svg></a>
@@ -105,40 +104,25 @@ export default function List() {
                         </thead>
                         <tbody>
                             {
-                                products.length > 0 && (
-                                    products.map((row, key) => (
+                                categories.length > 0 && (
+                                    categories.map((row, key) => (
 
                                         <tr key={key} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                {row.title}
+                                                {row.name}
                                             </th>
                                             <td className="px-6 py-4">
-                                                {row.description}
+                                                {row.slug}
                                             </td>
                                             <td className="px-6 py-4">
-                                                <img width="50px" src={`http://localhost:8000/storage/product/image/${row.image}`} />
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                {row.price}
-                                            </td>
-                                            <td className="px-6 py-4">
-
-                                                <button type="button"
-
-                                                    className={
-                                                        `${row.active ? "text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" : "py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"} `
-                                                    }
-                                                > {row.active ? 'active' : 'inactive'} </button>
-
-
-
+                                                {row.parent ? row.parent.name : 'None'}
                                             </td>
                                             <td className="px-6 py-4 text-right">
                                                 <div className="flex w-max gap-4">
-                                                    <Link to={`/product/edit/${row.id}`} className='<button type="button" class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2 text-center me-2 mb-2">Cyan to Blue</button>me-2'>
+                                                    <Link to={`/category/edit/${row.id}`} className='text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2 text-center me-2 mb-2'>
                                                         Edit
                                                     </Link>
-                                                    <Button className='text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2' color="red" onClick={() => deleteProduct(row.id)}>
+                                                    <Button className='text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2' color="red" onClick={() => deleteCategory(row.id)}>
                                                         Delete
                                                     </Button>
                                                 </div>

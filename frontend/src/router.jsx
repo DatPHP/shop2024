@@ -3,6 +3,7 @@ import Login from './pages/Login';
 import About from './pages/About';
 import Profile from './pages/Profile';
 import Register from './pages/Register';
+import Post from './pages/Post';
 import Category from './pages/Category';
 
 import ProtectedLayout from './components/ProtectedLayout';
@@ -13,6 +14,9 @@ import EditProduct from './components/product/edit.component';
 
 import CreateCategory from './components/category/create.component';
 import EditCategory from './components/category/edit.component';
+import CreatePost from './components/post/create.component';
+import EditPost from './components/post/edit.component';
+import PostDetail from './components/post/detail.component';
 
 const router = createBrowserRouter([
 	{
@@ -41,9 +45,6 @@ const router = createBrowserRouter([
 				path: '/profile',
 				element: <Profile />,
 			},
-
-
-			
 			{
 				path: '/product',
 				element: <ListProduct />,
@@ -56,7 +57,6 @@ const router = createBrowserRouter([
 				path: '/product/edit/:id',
 				element: <EditProduct />,
 			},
-
 
 			{
 				path: '/category',
@@ -71,9 +71,22 @@ const router = createBrowserRouter([
 				element: <EditCategory />,
 			},
 
-			
-
-
+			{
+				path: '/post',
+				element: <Post />,
+			},
+			{
+				path: '/post/create',
+				element: <CreatePost />,
+			},
+			{
+				path: '/post/edit/:id',
+				element: <EditPost />,
+			},
+			{
+				path: '/post/:id',
+				element: <PostDetail />,
+			},
 		],
 	},
 ]);

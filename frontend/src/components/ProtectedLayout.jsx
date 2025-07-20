@@ -28,6 +28,21 @@ export default function DefaultLayout() {
 	const closeSidebar = () => {
 		setLoad(true);
 	};
+
+	// Close dropdown when clicking outside
+	const handleClickOutside = (event) => {
+		if (isOpen && !event.target.closest('#dropdownInformation') && !event.target.closest('#dropdownInformationButton')) {
+			setOpen(false);
+		}
+	};
+
+	// Add event listener for clicking outside dropdown
+	useEffect(() => {
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, [isOpen]);
 	// check if user is logged in or not from server
 	useEffect(() => {
 		(async () => {
@@ -62,13 +77,25 @@ export default function DefaultLayout() {
 	// logout user
 	const handleLogout = async () => {
 		try {
+			console.log('Logging out...');
 			const resp = await axios.post('/logout');
+			console.log('Logout response:', resp);
 			if (resp.status === 200) {
+				// Clear user from context and localStorage
+				setUser(null);
 				localStorage.removeItem('user');
+				// Close dropdown
+				setOpen(false);
+				// Redirect to home page
 				window.location.href = '/';
 			}
 		} catch (error) {
-			console.log(error);
+			console.error('Logout error:', error);
+			// Even if the API call fails, clear local data
+			setUser(null);
+			localStorage.removeItem('user');
+			setOpen(false);
+			window.location.href = '/';
 		}
 	};
 	return (
@@ -115,11 +142,15 @@ export default function DefaultLayout() {
 								</li>
 							</ul>
 							<div className="py-2">
-								<a
-									onClick={handleLogout}
-									className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+								<button
+									onClick={(e) => {
+										e.preventDefault();
+										console.log('Sign out button clicked');
+										handleLogout();
+									}}
+									className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
 									Sign out
-								</a>
+								</button>
 							</div>
 						</div>
 
@@ -175,6 +206,17 @@ export default function DefaultLayout() {
 											: 'block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 dark:text-gray-400 md:dark:hover:text-white'
 									}>
 									Category
+								</NavLink>
+							</li>
+							<li>
+								<NavLink
+									to="/post"
+									className={({ isActive }) =>
+										isActive
+											? 'block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white'
+											: 'block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 dark:text-gray-400 md:dark:hover:text-white'
+									}>
+									Post
 								</NavLink>
 							</li>
 

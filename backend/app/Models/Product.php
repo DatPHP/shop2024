@@ -18,6 +18,15 @@ class Product extends Model
         'sales_off',
         'low_price',
         'status',
-        'active'
+        'active',
+        'user_id'
     ];
+
+    /**
+     * Get the user that owns the product.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
