@@ -135,7 +135,7 @@ export default function PostList() {
                     >
                         <option value={10}>10 per page</option>
                         <option value={15}>15 per page</option>
-                        <option value={55}>25 per page</option>
+                        <option value={25}>25 per page</option>
                     </select>
                 </div>
             </div>

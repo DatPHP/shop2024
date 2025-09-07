@@ -1,79 +1,80 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
-import axios from '../../axios';
-import Swal from 'sweetalert2'
+import axios from "../../axios";
+import Swal from "sweetalert2";
 
 export default function List() {
+  const [products, setProducts] = useState([]);
 
-    const [products, setProducts] = useState([])
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-    useEffect(() => {
-        fetchProducts()
-    }, [])
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get("/products");
+      setProducts(response.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      Swal.fire({
+        text: "Failed to fetch products",
+        icon: "error",
+      });
+    }
+  };
 
-    const fetchProducts = async () => {
-        try {
-            const response = await axios.get('/products');
-            setProducts(response.data);
-        } catch (error) {
-            console.error('Error fetching products:', error);
-            Swal.fire({
-                text: 'Failed to fetch products',
-                icon: "error"
-            });
-        }
+  const deleteProduct = async (id) => {
+    const isConfirm = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      return result.isConfirmed;
+    });
+
+    if (!isConfirm) {
+      return;
     }
 
-    const deleteProduct = async (id) => {
-        const isConfirm = await Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            return result.isConfirmed
+    try {
+      const response = await axios.delete(`/products/${id}`);
+      if (response.data.success) {
+        Swal.fire({
+          icon: "success",
+          text: response.data.message,
         });
-
-        if (!isConfirm) {
-            return;
-        }
-
-        try {
-            const response = await axios.delete(`/products/${id}`);
-            if (response.data.success) {
-                Swal.fire({
-                    icon: "success",
-                    text: response.data.message
-                });
-                fetchProducts();
-            } else {
-                Swal.fire({
-                    text: response.data.message || 'Failed to delete product',
-                    icon: "error"
-                });
-            }
-        } catch (error) {
-            Swal.fire({
-                text: error.response?.data?.message || 'Failed to delete product',
-                icon: "error"
-            });
-        }
+        fetchProducts();
+      } else {
+        Swal.fire({
+          text: response.data.message || "Failed to delete product",
+          icon: "error",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        text: error.response?.data?.message || "Failed to delete product",
+        icon: "error",
+      });
     }
+  };
 
-    return (
-        <>
-            <div className='flex justify-start'>
-                <Link
-                    to="/product/create"
-                    className="font-medium text-primary-600 hover:underline dark:text-primary-500">
-                    Create
-                </Link>
-            </div>
-            <div className="flex justify-center flex-col items-center mt-2">
+  return (
+    <>
+      {/* <div className="flex justify-end">
+        <Link
+          to="/product/create"
+          className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+        >
+          Create
+        </Link>
+      </div> */}
+
+      {/* <div className="flex justify-center flex-col items-center mt-2">
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                     <table className="w-full overflow-x-auto h-64 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -118,6 +119,7 @@ export default function List() {
                                 </th>
                             </tr>
                         </thead>
+
                         <tbody>
                             {
                                 products.length > 0 && (
@@ -165,7 +167,117 @@ export default function List() {
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </>
-    )
+            </div> */}
+
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Products</h1>
+          <Link
+            to="/product/create"
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          >
+            Create Product
+          </Link>
+      </div>
+
+      <div className="bg-white rounded-lg shadow-sm border">
+        {products.length === 0 ? (
+          <div className="p-8 text-center text-gray-500">No posts found</div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Product name
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Description
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Image
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Price
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {products.map((product) => (
+                  <tr key={product.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4">
+                      <div className="text-sm font-medium text-gray-900">
+                        {product.title}
+                      </div>
+                      {product.excerpt && (
+                        <div className="text-sm text-gray-500 truncate max-w-xs">
+                          {product.excerpt}
+                        </div>
+                      )}
+                    </td>
+
+                    <td className="px-6 py-4 text-sm text-gray-900">
+                      {product.description || "N/A"}
+                    </td>
+
+                    <td className="px-6 py-4 text-sm text-gray-900">
+                      <img
+                        width="50px"
+                        src={`http://localhost:8000/storage/product/image/${product.image}`}
+                        alt={product.title}
+                      />
+                    </td>
+
+                    <td className="px-6 py-4 text-sm text-gray-500">
+                      {product.price || "N/A"}
+                    </td>
+
+                    <td className="px-6 py-4">
+                      <span
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          product.active === 1
+                            ? "bg-green-100 text-green-800"
+                            : "bg-yellow-100 text-yellow-800"
+                        }`}
+                      >
+                        {product.active === 1 ? "active" : "inactive"}
+                      </span>
+                    </td>
+
+                    <td className="px-6 py-4 text-sm font-medium">
+                      <div className="flex space-x-2">
+                        <Link
+                          to={`/product/${product.id}`}
+                          className="text-blue-600 hover:text-blue-900"
+                        >
+                          View
+                        </Link>
+                        <Link
+                          to={`/product/edit/${product.id}`}
+                          className="text-indigo-600 hover:text-indigo-900"
+                        >
+                          Edit
+                        </Link>
+                        <button
+                          onClick={() => deleteProduct(product.id)}
+                          className="text-red-600 hover:text-red-900"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </>
+  );
 }

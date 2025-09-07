@@ -382,7 +382,7 @@ export default function DefaultLayout() {
 				</div>
 			</aside>
 			<div className="p-4 sm:ml-64 overflow-y-auto h-90">
-				<main className="container flex justify-center flex-col items-center mt-5 mb-5">
+				<main className="container flex flex-col mt-5 mb-5">
 					<Outlet />
 				</main>
 			</div>

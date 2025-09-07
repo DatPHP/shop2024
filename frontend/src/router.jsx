@@ -4,16 +4,19 @@ import About from './pages/About';
 import Profile from './pages/Profile';
 import Register from './pages/Register';
 import Post from './pages/Post';
-import Category from './pages/Category';
+// import Category from './pages/Category';
 
 import ProtectedLayout from './components/ProtectedLayout';
 import GuestLayout from './components/GuestLayout';
+// product
 import ListProduct from './components/product/list.component';
 import CreateProduct from './components/product/create.component';
 import EditProduct from './components/product/edit.component';
-
+// category
+import ListCategory from './components/category/list.component';
 import CreateCategory from './components/category/create.component';
 import EditCategory from './components/category/edit.component';
+// post
 import CreatePost from './components/post/create.component';
 import EditPost from './components/post/edit.component';
 import PostDetail from './components/post/detail.component';
@@ -60,7 +63,7 @@ const router = createBrowserRouter([
 
 			{
 				path: '/category',
-				element: <Category />,
+				element: <ListCategory />,
 			},
 			{
 				path: '/category/create',

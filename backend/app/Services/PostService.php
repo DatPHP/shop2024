@@ -45,22 +45,68 @@ class PostService
         });
     }
 
-    /**
-     * Search posts by keyword with pagination
+        /**
+     * Get archived posts with pagination and caching
      *
-     * @param string|null $keyword
      * @param int $perPage
      * @return LengthAwarePaginator
      */
-    public function searchPosts(?string $keyword, int $perPage = 15): LengthAwarePaginator
+    public function getArchivedPosts(int $perPage = 15): LengthAwarePaginator
     {
-        $cacheKey = "posts.search.{$keyword}.page.{$perPage}." . request()->get('page', 1);
+        $cacheKey = "posts.archived.page.{$perPage}." . request()->get('page', 1);
         
-        return Cache::remember($cacheKey, 180, function () use ($keyword, $perPage) {
+        return Cache::remember($cacheKey, 300, function () use ($perPage) {
             return Post::with('user:id,name,email')
-                ->search($keyword)
+                ->where('status','archived')
                 ->orderBy('created_at', 'desc')
                 ->paginate($perPage);
+        });
+    }
+
+           /**
+     * Get archived posts with pagination and caching
+     *
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     */
+    public function getDraftPosts(int $perPage = 15): LengthAwarePaginator
+    {
+        $cacheKey = "posts.draft.page.{$perPage}." . request()->get('page', 1);
+        
+        return Cache::remember($cacheKey, 300, function () use ($perPage) {
+            return Post::with('user:id,name,email')
+                ->where('status','draft')
+                ->orderBy('created_at', 'desc')
+                ->paginate($perPage);
+        });
+    }
+
+    
+
+
+    /**
+     * Search posts by keyword with pagination and optional status filter
+     *
+     * @param string|null $keyword
+     * @param int $perPage
+     * @param string|null $status
+     * @return LengthAwarePaginator
+     */
+    public function searchPosts(?string $keyword, int $perPage = 15, ?string $status = null): LengthAwarePaginator
+    {
+        $statusKey = $status ? ".{$status}" : '';
+        $cacheKey = "posts.search.{$keyword}{$statusKey}.page.{$perPage}." . request()->get('page', 1);
+        
+        return Cache::remember($cacheKey, 180, function () use ($keyword, $perPage, $status) {
+            $query = Post::with('user:id,name,email')
+                ->search($keyword)
+                ->orderBy('created_at', 'desc');
+            
+            if ($status) {
+                $query->where('status', $status);
+            }
+            
+            return $query->paginate($perPage);
         });
     }
 

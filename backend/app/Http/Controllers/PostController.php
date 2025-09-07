@@ -41,7 +41,7 @@ class PostController extends Controller
     public function index(Request $request): JsonResponse
     {
         try {
-            $perPage = $request->input('per_page', 25);
+            $perPage = $request->input('per_page', 10);
             $status = $request->input('status');
             $keyword = $request->input('search');
 
@@ -50,12 +50,15 @@ class PostController extends Controller
                 $perPage = 100;
             }
 
+            // Single optimized logic flow
             $posts = match (true) {
-                !empty($keyword) => $this->postService->searchPosts($keyword, $perPage),
+                !empty($keyword) => $this->postService->searchPosts($keyword, $perPage, $status),
                 $status === 'published' => $this->postService->getPublishedPosts($perPage),
+                $status === 'archived' => $this->postService->getArchivedPosts($perPage),
+                $status === 'draft' => $this->postService->getDraftPosts($perPage),
                 default => $this->postService->getAllPosts($perPage),
             };
-
+            
             return response()->json([
                 'success' => true,
                 'message' => 'Posts retrieved successfully',

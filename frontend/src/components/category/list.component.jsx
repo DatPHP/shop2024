@@ -66,7 +66,7 @@ export default function List() {
 
     return (
         <>
-            <div className='flex justify-start'>
+            {/* <div className='flex justify-start'>
                 <Link
                     to="/category/create"
                     className="font-medium text-primary-600 hover:underline dark:text-primary-500">
@@ -134,7 +134,93 @@ export default function List() {
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div> */}
+
+
+            <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Categories</h1>
+          <Link
+            to="/category/create"
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          >
+            Create Category
+          </Link>
+      </div>
+
+      <div className="bg-white rounded-lg shadow-sm border">
+        {categories.length === 0 ? (
+          <div className="p-8 text-center text-gray-500">No posts found</div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Category name
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Category slug
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Parent Category
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {categories.map((category) => (
+                  <tr key={category.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4">
+                      <div className="text-sm font-medium text-gray-900">
+                        {category.name}
+                      </div>
+                      {category.excerpt && (
+                        <div className="text-sm text-gray-500 truncate max-w-xs">
+                          {category.excerpt}
+                        </div>
+                      )}
+                    </td>
+
+                    <td className="px-6 py-4 text-sm text-gray-900">
+                      {category.slug || "N/A"}
+                    </td>
+
+                    <td className="px-6 py-4 text-sm text-gray-500">
+                      {category.parent ? category.parent.name : "None"}
+                    </td>
+
+                    <td className="px-6 py-4 text-sm font-medium">
+                      <div className="flex space-x-2">
+                        <Link
+                          to={`/category/${category.id}`}
+                          className="text-blue-600 hover:text-blue-900"
+                        >
+                          View
+                        </Link>
+                        <Link
+                          to={`/category/edit/${category.id}`}
+                          className="text-indigo-600 hover:text-indigo-900"
+                        >
+                          Edit
+                        </Link>
+                        <button
+                          onClick={() => deletecategory(category.id)}
+                          className="text-red-600 hover:text-red-900"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
         </>
     )
 }
