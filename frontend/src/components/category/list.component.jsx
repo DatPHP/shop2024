@@ -7,13 +7,14 @@ import Swal from 'sweetalert2'
 export default function List() {
 
     const [categories, setCategories] = useState([])
-
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         fetchCategories()
     }, [])
 
     const fetchCategories = async () => {
         try {
+            setLoading(true);
             const response = await axios.get('/categories');
             setCategories(response.data);
         } catch (error) {
@@ -22,6 +23,8 @@ export default function List() {
                 text: 'Failed to fetch categories',
                 icon: "error"
             });
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -62,6 +65,14 @@ export default function List() {
                 icon: "error"
             });
         }
+    }
+
+    if (loading && categories.length === 0) {
+        return (
+            <div className="flex justify-center items-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            </div>
+        );
     }
 
     return (
@@ -137,7 +148,7 @@ export default function List() {
             </div> */}
 
 
-            <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Categories</h1>
           <Link
             to="/category/create"

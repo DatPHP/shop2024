@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 
 export default function List() {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchProducts();
@@ -13,6 +14,7 @@ export default function List() {
 
   const fetchProducts = async () => {
     try {
+      setLoading(true);
       const response = await axios.get("/products");
       setProducts(response.data);
     } catch (error) {
@@ -21,6 +23,8 @@ export default function List() {
         text: "Failed to fetch products",
         icon: "error",
       });
+    } finally {
+        setLoading(false);
     }
   };
 
@@ -62,6 +66,15 @@ export default function List() {
       });
     }
   };
+
+  if (loading && products.length === 0) {
+    return (
+        <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        </div>
+    );
+}
+
 
   return (
     <>
