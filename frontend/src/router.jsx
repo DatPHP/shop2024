@@ -4,6 +4,10 @@ import About from './pages/About';
 import Profile from './pages/Profile';
 import Register from './pages/Register';
 import Post from './pages/Post';
+import Company from './pages/Company';
+import CreateCompany from './components/company/create.component';
+import EditCompany from './components/company/edit.component';
+import CompanyDetail from './components/company/detail.component';
 // import Category from './pages/Category';
 
 import ProtectedLayout from './components/ProtectedLayout';
@@ -44,6 +48,22 @@ const router = createBrowserRouter([
 				path: '/about',
 				element: <About />,
 			},
+			{
+				path: '/company',
+				element: <Company />,
+			},
+            {
+                path: '/company/create',
+                element: <CreateCompany />,
+            },
+            {
+                path: '/company/edit/:id',
+                element: <EditCompany />,
+            },
+            {
+                path: '/company/:id',
+                element: <CompanyDetail />,
+            },
 			{
 				path: '/profile',
 				element: <Profile />,

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\Api\CompanyController;
 
 
 /*
@@ -59,6 +60,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // Post status management
     Route::patch('/posts/{id}/publish', [PostController::class, 'publish']);
     Route::patch('/posts/{id}/archive', [PostController::class, 'archive']);
+
+
+    Route::apiResource('companies', CompanyController::class);
  
 });
 
