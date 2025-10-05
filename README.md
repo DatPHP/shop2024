@@ -13,6 +13,7 @@ A modern e-commerce platform built with **Laravel 10** backend API and **React 1
 - [API Documentation](#api-documentation)
 - [Frontend Setup](#frontend-setup)
 - [Usage](#usage)
+- [Company CRUD (Backend + Frontend)](#company-crud-backend--frontend)
 - [Security Features](#security-features)
 - [Contributing](#contributing)
 - [License](#license)
@@ -258,6 +259,122 @@ Authorization: Bearer {token}
         "password": ["The password field is required."]
     }
 }
+```
+
+## 🏢 Company CRUD (Backend + Frontend)
+
+This project includes a full CRUD implementation for managing companies, with a Laravel API and React pages/forms.
+
+### Backend: Company API
+
+- Controller: `backend/app/Http/Controllers/Api/CompanyController.php`
+- Model: `backend/app/Models/Company.php`
+- Migrations: `backend/database/migrations/2025_10_05_093450_create_companies_table.php`
+- Routes: `backend/routes/api.php`
+
+#### Endpoints
+
+- List companies
+  ```http
+  GET /api/companies
+  ```
+
+- Get company detail
+  ```http
+  GET /api/companies/{id}
+  ```
+
+- Create company
+  ```http
+  POST /api/companies
+  Content-Type: application/json
+
+  {
+      "name": "Acme Inc",
+      "email": "info@acme.test",
+      "website": "https://acme.test"
+  }
+  ```
+
+- Update company
+  ```http
+  PUT /api/companies/{id}
+  Content-Type: application/json
+
+  {
+      "name": "Acme Incorporated",
+      "email": "contact@acme.test",
+      "website": "https://acme.test"
+  }
+  ```
+
+- Delete company
+  ```http
+  DELETE /api/companies/{id}
+  ```
+
+#### Typical Response Shape
+
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "Acme Inc",
+    "email": "info@acme.test",
+    "website": "https://acme.test",
+    "created_at": "2025-10-05T09:34:50.000000Z"
+  }
+}
+```
+
+#### Validation
+
+- Required fields: `name`
+- Optional: `email` (must be valid email), `website` (valid URL)
+
+> Note: Exact validation rules live in request classes under `backend/app/Http/Requests` if present, or in the controller.
+
+### Frontend: Company Pages & Templates
+
+- Pages/Components:
+  - `frontend/src/components/company/create.component.jsx` — Create form
+  - `frontend/src/components/company/edit.component.jsx` — Edit form
+  - `frontend/src/components/company/detail.component.jsx` — Detail view
+  - (List page lives in your routing/pages setup, e.g. `frontend/src/pages`)
+- Router: `frontend/src/router.jsx`
+- Layouts: `frontend/src/components/ProtectedLayout.jsx`, `frontend/src/components/GuestLayout.jsx`
+
+#### Common UX Patterns
+
+- Forms use controlled inputs, client-side validation, and Axios to call the API (`frontend/src/axios.js`).
+- Success/failure feedback is surfaced via alerts/toasts and inline error messages.
+- Protected routes ensure only authenticated users can create/edit.
+
+#### Example Routes (React Router)
+
+```jsx
+// in frontend/src/router.jsx
+{
+  path: "/companies",
+  children: [
+    { path: "new", element: <CreateCompany /> },
+    { path: ":id", element: <CompanyDetail /> },
+    { path: ":id/edit", element: <EditCompany /> },
+  ],
+}
+```
+
+#### Example Axios Calls
+
+```js
+// Create
+axios.post("/companies", payload)
+
+// Update
+axios.put(`/companies/${id}`, payload)
+
+// Delete
+axios.delete(`/companies/${id}`)
 ```
 
 ## 🎨 Frontend Setup
