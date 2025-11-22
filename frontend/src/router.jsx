@@ -5,6 +5,8 @@ import Profile from './pages/Profile';
 import Register from './pages/Register';
 import Post from './pages/Post';
 import Company from './pages/Company';
+import Customer from './pages/Customer';
+import Order from './pages/Order';
 import CreateCompany from './components/company/create.component';
 import EditCompany from './components/company/edit.component';
 import CompanyDetail from './components/company/detail.component';
@@ -24,6 +26,13 @@ import EditCategory from './components/category/edit.component';
 import CreatePost from './components/post/create.component';
 import EditPost from './components/post/edit.component';
 import PostDetail from './components/post/detail.component';
+// customer
+import CreateCustomer from './components/customer/create.component';
+import EditCustomer from './components/customer/edit.component';
+import CustomerDetail from './components/customer/detail.component';
+// order
+import CreateOrder from './components/order/create.component';
+import OrderDetail from './components/order/detail.component';
 
 const router = createBrowserRouter([
 	{
@@ -109,6 +118,34 @@ const router = createBrowserRouter([
 			{
 				path: '/post/:id',
 				element: <PostDetail />,
+			},
+			{
+				path: '/customer',
+				element: <Customer />,
+			},
+			{
+				path: '/customer/create',
+				element: <CreateCustomer />,
+			},
+			{
+				path: '/customer/edit/:id',
+				element: <EditCustomer />,
+			},
+			{
+				path: '/customer/:id',
+				element: <CustomerDetail />,
+			},
+			{
+				path: '/order',
+				element: <Order />,
+			},
+			{
+				path: '/order/create',
+				element: <CreateOrder />,
+			},
+			{
+				path: '/order/:id',
+				element: <OrderDetail />,
 			},
 		],
 	},

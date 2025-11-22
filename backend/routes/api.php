@@ -7,6 +7,10 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\Api\CompanyController;
+use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\OrderDetailController;
+use App\Http\Controllers\Api\OrderHistoryController;
 
 
 /*
@@ -38,6 +42,22 @@ Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{category}', [CategoryController::class, 'show']);
 Route::get('/allcategory', [CategoryController::class, 'allCategory']);
 
+// Public customer routes (read-only)
+Route::get('/customers', [CustomerController::class, 'index']);
+Route::get('/customers/{customer}', [CustomerController::class, 'show']);
+
+// Public order routes (read-only)
+Route::get('/orders', [OrderController::class, 'index']);
+Route::get('/orders/{order}', [OrderController::class, 'show']);
+
+// Public order detail routes (read-only)
+Route::get('/order-details', [OrderDetailController::class, 'index']);
+Route::get('/order-details/{orderDetail}', [OrderDetailController::class, 'show']);
+
+// Public order history routes (read-only)
+Route::get('/order-history', [OrderHistoryController::class, 'index']);
+Route::get('/order-history/{orderHistory}', [OrderHistoryController::class, 'show']);
+
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -63,6 +83,26 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::apiResource('companies', CompanyController::class);
+    
+    // Customer management (CRUD)
+    Route::post('/customers', [CustomerController::class, 'store']);
+    Route::put('/customers/{customer}', [CustomerController::class, 'update']);
+    Route::delete('/customers/{customer}', [CustomerController::class, 'destroy']);
+    
+    // Order management (CRUD)
+    Route::post('/orders', [OrderController::class, 'store']);
+    Route::put('/orders/{order}', [OrderController::class, 'update']);
+    Route::delete('/orders/{order}', [OrderController::class, 'destroy']);
+    
+    // Order detail management (CRUD)
+    Route::post('/order-details', [OrderDetailController::class, 'store']);
+    Route::put('/order-details/{orderDetail}', [OrderDetailController::class, 'update']);
+    Route::delete('/order-details/{orderDetail}', [OrderDetailController::class, 'destroy']);
+    
+    // Order history management (CRUD)
+    Route::post('/order-history', [OrderHistoryController::class, 'store']);
+    Route::put('/order-history/{orderHistory}', [OrderHistoryController::class, 'update']);
+    Route::delete('/order-history/{orderHistory}', [OrderHistoryController::class, 'destroy']);
  
 });
 

@@ -198,6 +198,28 @@ export default function DefaultLayout() {
 							</li>
 							<li>
 								<NavLink
+									to="/customer"
+									className={({ isActive }) =>
+										isActive
+											? 'block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white'
+											: 'block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 dark:text-gray-400 md:dark:hover:text-white'
+									}>
+									Customer
+								</NavLink>
+							</li>
+							<li>
+								<NavLink
+									to="/order"
+									className={({ isActive }) =>
+										isActive
+											? 'block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white'
+											: 'block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 dark:text-gray-400 md:dark:hover:text-white'
+									}>
+									Order
+								</NavLink>
+							</li>
+							<li>
+								<NavLink
 									to="/product"
 									className={({ isActive }) =>
 										isActive
@@ -309,8 +331,28 @@ export default function DefaultLayout() {
 										}>
 										Product
 									</NavLink>
-
-									{/* <a href="#" className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Products</a> */}
+								</li>
+								<li>
+									<NavLink
+										to="/customer"
+										className={({ isActive }) =>
+											isActive
+												? ' flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group active:bg-gray-100 dark:text-white dark:active:bg-gray-700'
+												: ' flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
+										}>
+										Customer
+									</NavLink>
+								</li>
+								<li>
+									<NavLink
+										to="/order"
+										className={({ isActive }) =>
+											isActive
+												? ' flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group active:bg-gray-100 dark:text-white dark:active:bg-gray-700'
+												: ' flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
+										}>
+										Order
+									</NavLink>
 								</li>
 								<li>
 									<a href="#" className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Billing</a>
@@ -345,6 +387,34 @@ export default function DefaultLayout() {
 								</svg>
 								<span className="flex-1 ms-3 whitespace-nowrap">Users</span>
 							</a>
+						</li>
+						<li>
+							<NavLink
+								to="/customer"
+								className={({ isActive }) =>
+									isActive
+										? 'flex items-center p-2 text-gray-900 rounded-lg dark:text-white bg-gray-100 dark:bg-gray-700'
+										: 'flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group'
+								}>
+								<svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+									<path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+								</svg>
+								<span className="flex-1 ms-3 whitespace-nowrap">Customers</span>
+							</NavLink>
+						</li>
+						<li>
+							<NavLink
+								to="/order"
+								className={({ isActive }) =>
+									isActive
+										? 'flex items-center p-2 text-gray-900 rounded-lg dark:text-white bg-gray-100 dark:bg-gray-700'
+										: 'flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group'
+								}>
+								<svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 21">
+									<path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
+								</svg>
+								<span className="flex-1 ms-3 whitespace-nowrap">Orders</span>
+							</NavLink>
 						</li>
 						<li>
 							<NavLink

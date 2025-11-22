@@ -19,7 +19,9 @@ class Product extends Model
         'low_price',
         'status',
         'active',
-        'user_id'
+        'user_id',
+        'category_id',
+        'stock_quantity'
     ];
 
     /**
@@ -28,5 +30,21 @@ class Product extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the category that owns the product.
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Get the order details for the product.
+     */
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetail::class);
     }
 }
