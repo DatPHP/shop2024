@@ -79,6 +79,78 @@ export default function OrderList() {
         }
     }, [fetchOrders, pagination.current_page]);
 
+    const handleExportCSV = async () => {
+        try {
+            Swal.fire({
+                title: 'Exporting...',
+                text: 'Please wait while we generate your CSV file',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            const params = {};
+            if (filters.search) {
+                params.search = filters.search;
+            }
+            if (filters.customer_id) {
+                params.customer_id = filters.customer_id;
+            }
+
+            await orderService.exportCSV(params);
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'CSV file downloaded successfully',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        } catch (err) {
+            Swal.fire({
+                text: err.response?.data?.message || 'Failed to export CSV',
+                icon: 'error',
+            });
+        }
+    };
+
+    const handleExportPDF = async () => {
+        try {
+            Swal.fire({
+                title: 'Exporting...',
+                text: 'Please wait while we generate your PDF file',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            const params = {};
+            if (filters.search) {
+                params.search = filters.search;
+            }
+            if (filters.customer_id) {
+                params.customer_id = filters.customer_id;
+            }
+
+            await orderService.exportPDF(params);
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'PDF file downloaded successfully',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        } catch (err) {
+            Swal.fire({
+                text: err.response?.data?.message || 'Failed to export PDF',
+                icon: 'error',
+            });
+        }
+    };
+
     useEffect(() => {
         fetchOrders(1);
     }, [fetchOrders]);
@@ -104,14 +176,36 @@ export default function OrderList() {
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold">Orders</h1>
-                {user && (
-                    <Link
-                        to="/order/create"
-                        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                <div className="flex gap-2">
+                    <button
+                        onClick={handleExportCSV}
+                        className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 flex items-center gap-2"
+                        title="Export as CSV"
                     >
-                        Create Order
-                    </Link>
-                )}
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Export CSV
+                    </button>
+                    <button
+                        onClick={handleExportPDF}
+                        className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 flex items-center gap-2"
+                        title="Export as PDF"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                        Export PDF
+                    </button>
+                    {user && (
+                        <Link
+                            to="/order/create"
+                            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                        >
+                            Create Order
+                        </Link>
+                    )}
+                </div>
             </div>
 
             <div className="bg-white p-4 rounded-lg shadow-sm border">

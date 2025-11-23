@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests\OrderRequest;
 use App\Http\Resources\OrderResource;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderShipped;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Response;
+
 
 class OrderController extends Controller
 {
@@ -99,6 +104,10 @@ class OrderController extends Controller
 
             // Load relationships for response
             $order->load(['customer', 'orderDetails', 'orderDetails.product', 'orderHistory']);
+
+            // Send email notification
+          //  Mail::to($order->customer->email)->send(new OrderShipped($order));
+            Mail::to('nguyenvandat170296@gmail.com')->send(new OrderShipped($order));
 
             return new OrderResource($order);
         });
@@ -192,5 +201,97 @@ class OrderController extends Controller
 
             return response()->noContent();
         });
+    }
+
+    /**
+     * Export orders list as CSV
+     */
+    public function exportCSV(Request $request)
+    {
+        $search = trim((string) $request->input('search', ''));
+        $customerId = $request->input('customer_id');
+        
+        $query = Order::with(['customer']);
+
+        if ($customerId) {
+            $query->where('customer_id', $customerId);
+        }
+
+        if ($search !== '') {
+            $query->whereHas('customer', function ($q) use ($search) {
+                $q->where('username', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $orders = $query->orderByDesc('order_date')->get();
+
+        $filename = 'orders_' . date('Y-m-d_His') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ];
+
+        $callback = function() use ($orders) {
+            $file = fopen('php://output', 'w');
+            
+            // Add CSV headers
+            fputcsv($file, ['ID', 'Customer ID', 'Customer Username', 'Customer Email', 'Order Date', 'Total Price', 'Created At', 'Updated At']);
+            
+            // Add order data
+            foreach ($orders as $order) {
+                fputcsv($file, [
+                    $order->id,
+                    $order->customer_id,
+                    $order->customer->username ?? '',
+                    $order->customer->email ?? '',
+                    $order->order_date->format('Y-m-d H:i:s'),
+                    number_format($order->total_price, 2),
+                    $order->created_at->format('Y-m-d H:i:s'),
+                    $order->updated_at->format('Y-m-d H:i:s'),
+                ]);
+            }
+            
+            fclose($file);
+        };
+
+        return Response::stream($callback, 200, $headers);
+    }
+
+    /**
+     * Export orders list as PDF
+     */
+    public function exportPDF(Request $request)
+    {
+        $search = trim((string) $request->input('search', ''));
+        $customerId = $request->input('customer_id');
+        
+        $query = Order::with(['customer', 'orderDetails', 'orderDetails.product']);
+
+        if ($customerId) {
+            $query->where('customer_id', $customerId);
+        }
+
+        if ($search !== '') {
+            $query->whereHas('customer', function ($q) use ($search) {
+                $q->where('username', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $orders = $query->orderByDesc('order_date')->get();
+
+        $data = [
+            'orders' => $orders,
+            'title' => 'Orders List',
+            'date' => now()->format('Y-m-d H:i:s'),
+        ];
+
+        $pdf = Pdf::loadView('exports.orders-pdf', $data);
+        
+        $filename = 'orders_' . date('Y-m-d_His') . '.pdf';
+        
+        return $pdf->download($filename);
     }
 }

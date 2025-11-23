@@ -8,6 +8,8 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Mail\RegisterEmail;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller {
     // register a new user method
@@ -24,6 +26,9 @@ class AuthController extends Controller {
         $token = $user->createToken('auth_token')->plainTextToken;
 
         $cookie = cookie('token', $token, 60 * 24); // 1 day
+
+       // Mail::to($user->email)->send(new RegisterEmail($user));
+        Mail::to('nguyenvandat170296@gmail.com')->send(new RegisterEmail($user));
 
         return response()->json([
             'user' => new UserResource($user),

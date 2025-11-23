@@ -45,10 +45,14 @@ Route::get('/allcategory', [CategoryController::class, 'allCategory']);
 // Public customer routes (read-only)
 Route::get('/customers', [CustomerController::class, 'index']);
 Route::get('/customers/{customer}', [CustomerController::class, 'show']);
+Route::get('/customers/export/csv', [CustomerController::class, 'exportCSV']);
+Route::get('/customers/export/pdf', [CustomerController::class, 'exportPDF']);
 
 // Public order routes (read-only)
 Route::get('/orders', [OrderController::class, 'index']);
 Route::get('/orders/{order}', [OrderController::class, 'show']);
+Route::get('/orders/export/csv', [OrderController::class, 'exportCSV']);
+Route::get('/orders/export/pdf', [OrderController::class, 'exportPDF']);
 
 // Public order detail routes (read-only)
 Route::get('/order-details', [OrderDetailController::class, 'index']);
