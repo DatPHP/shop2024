@@ -262,6 +262,9 @@ class OrderController extends Controller
     /**
      * Export orders list as PDF
      */
+    /**
+     * Export orders list as PDF
+     */
     public function exportPDF(Request $request)
     {
         $search = trim((string) $request->input('search', ''));
@@ -293,5 +296,52 @@ class OrderController extends Controller
         $filename = 'orders_' . date('Y-m-d_His') . '.pdf';
         
         return $pdf->download($filename);
+    }
+
+    /**
+     * Get revenue analytics filtered by day, week, or month.
+     */
+    public function getRevenueAnalytics(Request $request)
+    {
+        $filter = $request->input('filter', 'day'); // day, week, month
+        $query = Order::query();
+
+        switch ($filter) {
+            case 'week':
+                $data = $query->select(
+                    DB::raw('DATE(order_date) as date'),
+                    DB::raw('SUM(total_price) as total')
+                )
+                ->where('order_date', '>=', now()->subWeeks(1))
+                ->groupBy('date')
+                ->orderBy('date')
+                ->get();
+                break;
+
+            case 'month':
+                $data = $query->select(
+                    DB::raw('DATE(order_date) as date'),
+                    DB::raw('SUM(total_price) as total')
+                )
+                ->where('order_date', '>=', now()->subMonths(1))
+                ->groupBy('date')
+                ->orderBy('date')
+                ->get();
+                break;
+            
+            case 'day':
+            default:
+                $data = $query->select(
+                    DB::raw('HOUR(order_date) as hour'),
+                    DB::raw('SUM(total_price) as total')
+                )
+                ->whereDate('order_date', now())
+                ->groupBy('hour')
+                ->orderBy('hour')
+                ->get();
+                break;
+        }
+
+        return response()->json($data);
     }
 }

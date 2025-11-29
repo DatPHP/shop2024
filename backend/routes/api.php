@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\OrderDetailController;
 use App\Http\Controllers\Api\OrderHistoryController;
+use App\Http\Controllers\Api\DashboardController;
 
 
 /*
@@ -49,6 +50,7 @@ Route::get('/customers/export/csv', [CustomerController::class, 'exportCSV']);
 Route::get('/customers/export/pdf', [CustomerController::class, 'exportPDF']);
 
 // Public order routes (read-only)
+Route::get('/orders/revenue-analytics', [OrderController::class, 'getRevenueAnalytics']);
 Route::get('/orders', [OrderController::class, 'index']);
 Route::get('/orders/{order}', [OrderController::class, 'show']);
 Route::get('/orders/export/csv', [OrderController::class, 'exportCSV']);
@@ -61,6 +63,9 @@ Route::get('/order-details/{orderDetail}', [OrderDetailController::class, 'show'
 // Public order history routes (read-only)
 Route::get('/order-history', [OrderHistoryController::class, 'index']);
 Route::get('/order-history/{orderHistory}', [OrderHistoryController::class, 'show']);
+
+// Dashboard Metrics
+Route::get('/dashboard/metrics', [DashboardController::class, 'index']);
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
