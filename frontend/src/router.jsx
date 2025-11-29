@@ -18,10 +18,12 @@ import GuestLayout from './components/GuestLayout';
 import ListProduct from './components/product/list.component';
 import CreateProduct from './components/product/create.component';
 import EditProduct from './components/product/edit.component';
+import ProductDetail from './components/product/detail.component';
 // category
 import ListCategory from './components/category/list.component';
 import CreateCategory from './components/category/create.component';
 import EditCategory from './components/category/edit.component';
+import CategoryDetail from './components/category/detail.component';
 // post
 import CreatePost from './components/post/create.component';
 import EditPost from './components/post/edit.component';
@@ -89,6 +91,10 @@ const router = createBrowserRouter([
 				path: '/product/edit/:id',
 				element: <EditProduct />,
 			},
+			{
+				path: '/product/:id',
+				element: <ProductDetail />,
+			},
 
 			{
 				path: '/category',
@@ -101,6 +107,10 @@ const router = createBrowserRouter([
 			{
 				path: '/category/edit/:id',
 				element: <EditCategory />,
+			},
+			{
+				path: '/category/:id',
+				element: <CategoryDetail />,
 			},
 
 			{
