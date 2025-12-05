@@ -1,4 +1,4 @@
-# Shop2024 - Full Stack E-commerce Application
+# Shop2026 - Full Stack E-commerce Application
 
 A modern e-commerce platform built with **Laravel 10** backend API and **React 18** frontend, featuring secure SPA authentication using Laravel Sanctum, complete order management system, and comprehensive CRUD operations.
 
@@ -16,6 +16,7 @@ A modern e-commerce platform built with **Laravel 10** backend API and **React 1
 - [Email Configuration](#email-configuration)
 - [PDF Export Configuration](#pdf-export-configuration)
 - [API Documentation](#api-documentation)
+- [Dashboard & Analytics](#dashboard--analytics)
 - [Frontend Setup](#frontend-setup)
 - [Usage](#usage)
 - [Security Features](#security-features)
@@ -24,7 +25,7 @@ A modern e-commerce platform built with **Laravel 10** backend API and **React 1
 
 ## 🚀 Overview
 
-Shop2024 is a full-stack e-commerce application that demonstrates modern web development practices with secure authentication, responsive design, and scalable architecture. The application includes a complete order management system with customer management, product catalog, order processing, and order history tracking.
+Shop2026 is a full-stack e-commerce application that demonstrates modern web development practices with secure authentication, responsive design, and scalable architecture. The application includes a complete order management system with customer management, product catalog, order processing, and order history tracking.
 
 ### Key Highlights
 
@@ -57,6 +58,7 @@ Shop2024 is a full-stack e-commerce application that demonstrates modern web dev
 - **Tailwind CSS** - Utility-first CSS framework
 - **Flowbite** - UI component library
 - **SweetAlert2** - Beautiful alerts and notifications
+- **Chart.js / Recharts** - Chart library for data visualization
 
 ## ✨ Features
 
@@ -103,6 +105,21 @@ Shop2024 is a full-stack e-commerce application that demonstrates modern web dev
 - Guest/authenticated layouts
 - Session persistence
 
+### Dashboard & Analytics Features
+- **Profile Dashboard**: Comprehensive user profile management interface
+  - User information display and editing
+  - Account settings and preferences
+  - Activity history and statistics
+  - Profile picture management
+- **Analytics Dashboard**: Real-time business metrics and insights
+  - Customer count statistics
+  - Product inventory overview
+  - Order statistics and trends
+  - Revenue analytics and reporting
+  - Interactive charts and graphs
+  - Data visualization with Chart.js/Recharts
+  - Time-based filtering and date range selection
+
 ### UI/UX Features
 - Responsive design
 - Dark mode support
@@ -126,7 +143,8 @@ shop2024/
 │   │   │   │   │   ├── CustomerController.php
 │   │   │   │   │   ├── OrderController.php
 │   │   │   │   │   ├── OrderDetailController.php
-│   │   │   │   │   └── OrderHistoryController.php
+│   │   │   │   │   ├── OrderHistoryController.php
+│   │   │   │   │   └── StatisticsController.php
 │   │   │   │   ├── AuthController.php
 │   │   │   │   ├── CategoryController.php
 │   │   │   │   ├── PostController.php
@@ -197,6 +215,14 @@ shop2024/
 │   │   │   ├── category/           # Category components
 │   │   │   ├── company/            # Company components
 │   │   │   ├── post/               # Post components
+│   │   │   ├── dashboard/          # Dashboard components
+│   │   │   │   ├── Dashboard.jsx
+│   │   │   │   ├── ProfileDashboard.jsx
+│   │   │   │   ├── AnalyticsDashboard.jsx
+│   │   │   │   ├── StatCard.jsx
+│   │   │   │   ├── RevenueChart.jsx
+│   │   │   │   ├── SalesTrendChart.jsx
+│   │   │   │   └── OrderStatusChart.jsx
 │   │   │   ├── ProtectedLayout.jsx
 │   │   │   └── GuestLayout.jsx
 │   │   ├── contexts/
@@ -210,11 +236,13 @@ shop2024/
 │   │   │   ├── Post.jsx
 │   │   │   ├── Login.jsx
 │   │   │   ├── Register.jsx
-│   │   │   └── Profile.jsx
+│   │   │   ├── Profile.jsx
+│   │   │   └── Dashboard.jsx
 │   │   ├── services/               # API service layer
 │   │   │   ├── customerService.js
 │   │   │   ├── orderService.js
-│   │   │   └── postService.js
+│   │   │   ├── postService.js
+│   │   │   └── statisticsService.js
 │   │   ├── router.jsx             # React Router configuration
 │   │   └── axios.js               # Axios configuration
 │   └── public/
@@ -611,7 +639,7 @@ Stock Deduction → Order History Entry → Email Notification
 
 ```env
 # Application
-APP_NAME=Shop2024
+APP_NAME=Shop2026
 APP_ENV=local
 APP_DEBUG=true
 APP_URL=http://localhost:8000
@@ -938,6 +966,308 @@ When an order is created via `POST /api/orders`, an automatic order confirmation
 
 **Note:** Email sending is handled automatically by the system. No separate API endpoint is required.
 
+### Statistics & Analytics Endpoints
+
+#### Get Dashboard Statistics
+```http
+GET /api/statistics/dashboard
+```
+
+**Response:**
+```json
+{
+    "customers_count": 150,
+    "products_count": 500,
+    "orders_count": 320,
+    "total_revenue": 125000.50,
+    "recent_orders_count": 25,
+    "low_stock_products_count": 12
+}
+```
+
+#### Get Customer Count
+```http
+GET /api/statistics/customers/count
+```
+
+**Response:**
+```json
+{
+    "count": 150,
+    "active_customers": 120,
+    "new_customers_this_month": 15
+}
+```
+
+#### Get Product Count
+```http
+GET /api/statistics/products/count
+```
+
+**Response:**
+```json
+{
+    "count": 500,
+    "active_products": 450,
+    "out_of_stock": 10,
+    "low_stock": 12
+}
+```
+
+#### Get Order Count
+```http
+GET /api/statistics/orders/count
+```
+
+**Response:**
+```json
+{
+    "count": 320,
+    "pending_orders": 5,
+    "completed_orders": 300,
+    "cancelled_orders": 15,
+    "orders_this_month": 45
+}
+```
+
+#### Get Revenue Statistics
+```http
+GET /api/statistics/revenue?start_date=2024-01-01&end_date=2024-12-31
+```
+
+**Query Parameters:**
+- `start_date` (optional): Start date for revenue calculation (format: YYYY-MM-DD)
+- `end_date` (optional): End date for revenue calculation (format: YYYY-MM-DD)
+
+**Response:**
+```json
+{
+    "total_revenue": 125000.50,
+    "revenue_this_month": 15000.00,
+    "revenue_this_year": 125000.50,
+    "average_order_value": 390.63,
+    "revenue_by_month": [
+        {
+            "month": "2024-01",
+            "revenue": 10000.00,
+            "orders_count": 25
+        },
+        {
+            "month": "2024-02",
+            "revenue": 12000.00,
+            "orders_count": 30
+        }
+    ]
+}
+```
+
+#### Get Sales Trends
+```http
+GET /api/statistics/sales/trends?period=monthly&start_date=2024-01-01&end_date=2024-12-31
+```
+
+**Query Parameters:**
+- `period` (optional): Time period for trends (daily, weekly, monthly) - default: monthly
+- `start_date` (optional): Start date (format: YYYY-MM-DD)
+- `end_date` (optional): End date (format: YYYY-MM-DD)
+
+**Response:**
+```json
+{
+    "period": "monthly",
+    "data": [
+        {
+            "period": "2024-01",
+            "revenue": 10000.00,
+            "orders_count": 25,
+            "customers_count": 20
+        },
+        {
+            "period": "2024-02",
+            "revenue": 12000.00,
+            "orders_count": 30,
+            "customers_count": 25
+        }
+    ],
+    "summary": {
+        "total_revenue": 125000.50,
+        "total_orders": 320,
+        "total_customers": 150
+    }
+}
+```
+
+#### Get Product Statistics
+```http
+GET /api/statistics/products
+```
+
+**Response:**
+```json
+{
+    "total_products": 500,
+    "active_products": 450,
+    "inactive_products": 50,
+    "out_of_stock": 10,
+    "low_stock": 12,
+    "by_category": [
+        {
+            "category_id": 1,
+            "category_name": "Electronics",
+            "products_count": 150
+        },
+        {
+            "category_id": 2,
+            "category_name": "Clothing",
+            "products_count": 200
+        }
+    ],
+    "top_selling_products": [
+        {
+            "product_id": 1,
+            "product_name": "Product A",
+            "total_sold": 500,
+            "revenue": 25000.00
+        }
+    ]
+}
+```
+
+## 📊 Dashboard & Analytics
+
+### Profile Dashboard
+
+The Profile Dashboard provides users with a comprehensive view of their account information and activity.
+
+#### Features
+- **User Profile Management**
+  - View and edit personal information
+  - Update email and password
+  - Manage profile picture
+  - Account settings and preferences
+  
+- **Activity Overview**
+  - Recent orders history
+  - Account creation date
+  - Last login information
+  - Activity statistics
+
+- **Dashboard Widgets**
+  - Quick statistics cards
+  - Recent activity feed
+  - Account status indicators
+  - Notification center
+
+### Analytics Dashboard
+
+The Analytics Dashboard provides business owners and administrators with real-time insights into their e-commerce operations.
+
+#### Features
+- **Key Metrics Overview**
+  - Total customers count
+  - Total products in inventory
+  - Total orders processed
+  - Total revenue generated
+  - Real-time updates
+
+- **Revenue Analytics**
+  - Total revenue calculation
+  - Monthly/yearly revenue trends
+  - Average order value
+  - Revenue by time period
+  - Revenue growth percentage
+
+- **Sales Trends**
+  - Daily, weekly, monthly sales trends
+  - Order volume over time
+  - Customer acquisition trends
+  - Product performance metrics
+
+- **Inventory Insights**
+  - Product count by category
+  - Stock level alerts
+  - Low stock products
+  - Out of stock products
+  - Inventory turnover rate
+
+- **Customer Analytics**
+  - Total customer count
+  - Active vs inactive customers
+  - New customers this month
+  - Customer growth trends
+  - Customer retention metrics
+
+- **Order Analytics**
+  - Total orders count
+  - Orders by status (pending, completed, cancelled)
+  - Orders this month
+  - Order completion rate
+  - Average order processing time
+
+### Chart Library Integration
+
+The application uses **Chart.js** or **Recharts** for data visualization in the dashboard.
+
+#### Supported Chart Types
+- **Line Charts**: Revenue trends over time, sales trends
+- **Bar Charts**: Order counts by month, product sales comparison
+- **Pie Charts**: Revenue by category, order status distribution
+- **Area Charts**: Cumulative revenue, customer growth
+- **Donut Charts**: Product category distribution, order status breakdown
+
+#### Chart Features
+- Interactive tooltips with detailed information
+- Responsive design for all screen sizes
+- Customizable colors and themes
+- Export chart as image (PNG/JPEG)
+- Real-time data updates
+- Date range filtering
+- Multiple data series support
+
+#### Implementation Example
+```javascript
+// Using Chart.js
+import { Line } from 'react-chartjs-2';
+
+const RevenueChart = ({ revenueData }) => {
+  const data = {
+    labels: revenueData.map(item => item.month),
+    datasets: [{
+      label: 'Revenue',
+      data: revenueData.map(item => item.revenue),
+      borderColor: 'rgb(75, 192, 192)',
+      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+    }]
+  };
+
+  return <Line data={data} />;
+};
+```
+
+### Dashboard Components Structure
+
+```
+src/
+├── components/
+│   ├── dashboard/
+│   │   ├── Dashboard.jsx              # Main dashboard container
+│   │   ├── ProfileDashboard.jsx       # Profile management dashboard
+│   │   ├── AnalyticsDashboard.jsx     # Analytics dashboard
+│   │   ├── StatCard.jsx               # Statistics card component
+│   │   ├── RevenueChart.jsx           # Revenue chart component
+│   │   ├── SalesTrendChart.jsx        # Sales trend chart
+│   │   ├── OrderStatusChart.jsx       # Order status pie chart
+│   │   ├── ProductCategoryChart.jsx   # Product category distribution
+│   │   └── RecentActivity.jsx         # Recent activity feed
+│   └── ...
+├── services/
+│   ├── statisticsService.js           # Statistics API service
+│   └── ...
+└── pages/
+    ├── Dashboard.jsx                   # Dashboard page
+    └── Profile.jsx                     # Profile page
+```
+
 ## 🎨 Frontend Setup
 
 ### Component Structure
@@ -951,6 +1281,13 @@ src/
 │   ├── category/         # Category components
 │   ├── company/          # Company components
 │   ├── post/             # Post components
+│   ├── dashboard/        # Dashboard & analytics components
+│   │   ├── Dashboard.jsx
+│   │   ├── ProfileDashboard.jsx
+│   │   ├── AnalyticsDashboard.jsx
+│   │   ├── StatCard.jsx
+│   │   ├── RevenueChart.jsx
+│   │   └── SalesTrendChart.jsx
 │   ├── ProtectedLayout.jsx
 │   └── GuestLayout.jsx
 ├── contexts/
@@ -959,11 +1296,13 @@ src/
 │   ├── Customer.jsx
 │   ├── Order.jsx
 │   ├── Product.jsx
+│   ├── Dashboard.jsx
 │   └── ...
 ├── services/
 │   ├── customerService.js
 │   ├── orderService.js
-│   └── postService.js
+│   ├── postService.js
+│   └── statisticsService.js
 └── router.jsx
 ```
 
@@ -976,6 +1315,8 @@ src/
 - **Responsive Design**: Mobile-first approach with Tailwind CSS
 - **Debounced Search**: Optimized search functionality
 - **Pagination**: Efficient data loading
+- **Dashboard & Analytics**: Real-time statistics and data visualization
+- **Chart Integration**: Interactive charts for revenue, sales, and trends
 
 ## 📧 Email Configuration
 
@@ -1061,6 +1402,11 @@ return $pdf->download('filename.pdf');
 #### 1. **Administrator/User Role**
 - **Authentication**: Secure login and registration
 - **User Management**: Profile management and session handling
+- **Dashboard Access**: 
+  - View comprehensive analytics dashboard
+  - Access real-time business statistics
+  - Monitor revenue, orders, customers, and products
+  - View interactive charts and trends
 - **Content Management**: 
   - Create, update, and delete posts
   - Manage product catalog
@@ -1105,11 +1451,25 @@ return $pdf->download('filename.pdf');
   - Search and filter capabilities
   - Summary statistics
 
+- **Dashboard & Analytics**
+  - Real-time dashboard with key business metrics
+  - Customer count statistics
+  - Product inventory overview
+  - Order statistics and trends
+  - Revenue analytics and reporting
+  - Interactive charts and data visualization
+  - Sales trends analysis (daily, weekly, monthly)
+  - Product performance metrics
+  - Customer growth tracking
+  - Revenue by time period analysis
+
 - **Order Analytics**
   - Order tracking by customer
   - Order history analysis
   - Revenue calculations
   - Product sales tracking
+  - Order status distribution
+  - Average order value calculations
 
 #### 3. **Communication & Notifications**
 - **Email System**
@@ -1152,6 +1512,9 @@ return $pdf->download('filename.pdf');
   - Toast notifications
   - Search and pagination
   - Export functionality with file downloads
+  - Interactive dashboard with charts
+  - Profile dashboard for user management
+  - Real-time statistics updates
 
 ### Business Workflows
 

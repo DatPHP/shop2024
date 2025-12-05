@@ -13,7 +13,7 @@ import {
 
 export default function RevenueChart() {
   const [data, setData] = useState([]);
-  const [filter, setFilter] = useState('day');
+  const [filter, setFilter] = useState('week');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
