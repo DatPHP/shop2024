@@ -190,6 +190,44 @@ class OrderService {
             throw error;
         }
     }
+
+    // Export single order detail as PDF
+    async exportOrderDetailPDF(orderId) {
+        try {
+            const response = await axios.get(`${this.baseURL}/${orderId}/export/pdf`, {
+                responseType: 'blob',
+            });
+
+            // Create a blob URL and trigger download
+            const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+            const link = document.createElement('a');
+            link.href = url;
+            
+            // Get filename from Content-Disposition header or use default
+            const contentDisposition = response.headers['content-disposition'] || response.headers['Content-Disposition'];
+            let filename = `order_${orderId}.pdf`;
+            if (contentDisposition) {
+                const filenameMatch = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/i);
+                if (filenameMatch && filenameMatch[1]) {
+                    filename = filenameMatch[1].replace(/['"]/g, '');
+                }
+            }
+            
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
+
+            return {
+                success: true,
+                message: 'Order detail PDF exported successfully'
+            };
+        } catch (error) {
+            console.error('Error exporting order detail PDF:', error);
+            throw error;
+        }
+    }
 }
 
 export default new OrderService();

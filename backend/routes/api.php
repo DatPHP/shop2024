@@ -52,9 +52,10 @@ Route::get('/customers/export/pdf', [CustomerController::class, 'exportPDF']);
 // Public order routes (read-only)
 Route::get('/orders/revenue-analytics', [OrderController::class, 'getRevenueAnalytics']);
 Route::get('/orders', [OrderController::class, 'index']);
-Route::get('/orders/{order}', [OrderController::class, 'show']);
 Route::get('/orders/export/csv', [OrderController::class, 'exportCSV']);
 Route::get('/orders/export/pdf', [OrderController::class, 'exportPDF']);
+Route::get('/orders/{order}/export/pdf', [OrderController::class, 'exportOrderDetailPDF']);
+Route::get('/orders/{order}', [OrderController::class, 'show']);
 
 // Public order detail routes (read-only)
 Route::get('/order-details', [OrderDetailController::class, 'index']);

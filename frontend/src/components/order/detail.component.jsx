@@ -70,6 +70,36 @@ export default function OrderDetail() {
         }
     };
 
+    const handleExportPDF = async () => {
+        try {
+            Swal.fire({
+                title: 'Exporting PDF...',
+                text: 'Please wait while we generate your PDF',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            const result = await orderService.exportOrderDetailPDF(id);
+            if (result.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Order detail PDF exported successfully',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: err.response?.data?.message || 'Failed to export PDF'
+            });
+        }
+    };
+
     if (loading) {
         return (
             <div className="max-w-6xl mx-auto p-6">
@@ -113,14 +143,25 @@ export default function OrderDetail() {
                             <span>Created {new Date(order.created_at).toLocaleDateString()}</span>
                         </div>
                     </div>
-                    {canEdit && (
+                    <div className="flex space-x-3">
                         <button
-                            onClick={handleDelete}
-                            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                            onClick={handleExportPDF}
+                            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center space-x-2"
                         >
-                            Delete Order
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <span>Export PDF</span>
                         </button>
-                    )}
+                        {canEdit && (
+                            <button
+                                onClick={handleDelete}
+                                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                            >
+                                Delete Order
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
 

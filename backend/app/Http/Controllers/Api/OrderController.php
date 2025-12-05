@@ -299,6 +299,27 @@ class OrderController extends Controller
     }
 
     /**
+     * Export single order detail as PDF
+     */
+    public function exportOrderDetailPDF(Order $order)
+    {
+        // Load all necessary relationships
+        $order->load(['customer', 'orderDetails', 'orderDetails.product']);
+        
+        $data = [
+            'order' => $order,
+            'title' => 'Order Invoice',
+            'date' => now()->format('Y-m-d H:i:s'),
+        ];
+
+        $pdf = Pdf::loadView('exports.order-detail-pdf', $data);
+        
+        $filename = 'order_' . $order->id . '_' . date('Y-m-d_His') . '.pdf';
+        
+        return $pdf->download($filename);
+    }
+
+    /**
      * Get revenue analytics filtered by day, week, or month.
      */
     public function getRevenueAnalytics(Request $request)
