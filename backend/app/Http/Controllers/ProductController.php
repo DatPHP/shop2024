@@ -51,6 +51,7 @@ class ProductController extends Controller
             $product->status =  0;
             $product->sales_off =  '0';
             $product->low_price =  '0';
+            $product->category_id = $request->category_id ? $request->category_id : null;
 
             if($request->hasFile('image')){
                 $imageName = Str::random().'.'.$request->image->getClientOriginalExtension();
@@ -87,6 +88,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        $product->load('category');
         return response()->json([
             'product'=>$product
         ]);
@@ -111,7 +113,12 @@ class ProductController extends Controller
 
         try{
 
-            $product->fill($request->post())->update();
+            $product->title = $request->title;
+            $product->description = $request->description;
+            $product->price = $request->price;
+            $product->active = $request->active;
+            $product->category_id = $request->category_id ? $request->category_id : null;
+            $product->save();
 
             if($request->hasFile('image')){
 

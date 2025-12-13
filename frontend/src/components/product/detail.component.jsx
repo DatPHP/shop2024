@@ -161,6 +161,14 @@ export default function ProductDetail() {
                             <h2 className="text-xl font-semibold mb-2">Price</h2>
                             <p className="text-2xl font-bold text-blue-600">${product.price}</p>
                         </div>
+                        {product.category && (
+                            <div>
+                                <h2 className="text-xl font-semibold mb-2">Category</h2>
+                                <span className="inline-flex px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-800">
+                                    {product.category.name}
+                                </span>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

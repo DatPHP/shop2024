@@ -19,14 +19,27 @@ export default function CreateProduct() {
   const [price, setPrice] = useState("")
   const [checked, setChecked] = useState(0)
   const [imageUpload, setImageUpload] = useState()
+  const [categoryId, setCategoryId] = useState("")
+  const [categories, setCategories] = useState([])
 
   const [validationError, setValidationError] = useState({})
 
+  useEffect(() => {
+    fetchCategories()
+  }, [])
 
   useEffect(() => {
     // free memory when ever this component is unmounted
     return () => imageUpload && URL.revokeObjectURL(imageUpload.preview)
   }, [imageUpload])
+
+  const fetchCategories = async () => {
+    await axios.get(`http://localhost:8000/api/allcategory`).then(({ data }) => {
+      setCategories(data.categories)
+    }).catch((error) => {
+      console.error('Error fetching categories:', error)
+    })
+  }
 
   const changeHandler = (event) => {
     const file = event.target.files[0];
@@ -46,6 +59,9 @@ export default function CreateProduct() {
     formData.append('price', price)
     formData.append('active', checked)
     formData.append('status', 0)
+    if (categoryId) {
+      formData.append('category_id', categoryId)
+    }
 
     await axios.post(`http://localhost:8000/api/products`, formData).then(({ data }) => {
       Swal.fire({
@@ -142,6 +158,26 @@ export default function CreateProduct() {
                 className: "before:content-none after:content-none",
               }}
             />
+
+            <Typography variant="h6" color="blue-gray" className="-mb-3">
+              Category (Optional)
+            </Typography>
+            <select
+              id="Category"
+              value={categoryId}
+              onChange={(event) => {
+                setCategoryId(event.target.value)
+              }}
+              className="block w-full px-3 py-2 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            >
+              <option value="">Select a category (optional)</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+
             {imageUpload && <img className="h-auto max-w-lg rounded-lg" src={imageUpload.preview} />}
             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="image">Upload file</label>
             <input
