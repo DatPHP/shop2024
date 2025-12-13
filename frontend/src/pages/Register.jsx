@@ -54,7 +54,7 @@ export default function Register() {
 					className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
 					<img
 						className="w-8 h-8 mr-2"
-						src="../src/assets/img/shop2024.png"
+						src="/img/shop2024.png"
 						alt="logo"
 					/>
 					Shop2026
