@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
 		// Sanctum CSRF cookie route is at /sanctum/csrf-cookie (not under /api)
 		// So we need to use the base URL without /api prefix
 		// Use VITE_API_URL from environment variable if available
-		const realUrl = 'https://shop2024.onrender.com';
+		const realUrl = env.VITE_API_URL;
 		const sanctumBaseURL = import.meta.env.VITE_API_URL 
 			? import.meta.env.VITE_API_URL 
 			: (axios.defaults.baseURL || realUrl + '/api').replace('/api', '');

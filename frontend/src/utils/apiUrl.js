@@ -10,7 +10,7 @@ export const getBaseUrl = () => {
 		return import.meta.env.VITE_API_URL;
 	}
 
-	const realUrl = 'https://shop2024.onrender.com';
+	const realUrl = env.VITE_API_URL
 	
 	// Fallback: extract from axios instance or use default
 	const baseURL = axios.defaults.baseURL || realUrl + '/api';
