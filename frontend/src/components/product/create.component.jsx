@@ -6,7 +6,7 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-import axios from 'axios'
+import axios from '../../axios'
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom'
 
@@ -34,7 +34,7 @@ export default function CreateProduct() {
   }, [imageUpload])
 
   const fetchCategories = async () => {
-    await axios.get(`http://localhost:8000/api/allcategory`).then(({ data }) => {
+    await axios.get(`/allcategory`).then(({ data }) => {
       setCategories(data.categories)
     }).catch((error) => {
       console.error('Error fetching categories:', error)
@@ -63,7 +63,7 @@ export default function CreateProduct() {
       formData.append('category_id', categoryId)
     }
 
-    await axios.post(`http://localhost:8000/api/products`, formData).then(({ data }) => {
+    await axios.post(`/products`, formData).then(({ data }) => {
       Swal.fire({
         icon: "success",
         text: data.message

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import axios from '../../axios';
 import Swal from 'sweetalert2';
+import { getStorageUrl } from '../../utils/apiUrl';
 
 export default function ProductDetail() {
     const navigate = useNavigate();
@@ -142,7 +143,7 @@ export default function ProductDetail() {
                     <div className="md:col-span-1">
                         {product.image ? (
                              <img
-                                src={`http://localhost:8000/storage/product/image/${product.image}`}
+                                src={getStorageUrl(`product/image/${product.image}`)}
                                 alt={product.title}
                                 className="w-full h-auto rounded-lg shadow-sm object-cover"
                             />

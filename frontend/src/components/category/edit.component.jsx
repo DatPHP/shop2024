@@ -8,7 +8,7 @@ import {
   Select,
   Option
 } from "@material-tailwind/react";
-import axios from 'axios'
+import axios from '../../axios'
 import Swal from 'sweetalert2';
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -34,7 +34,7 @@ export default function EditCategory() {
     }, [])
 
     const fetchCategories = async () => {
-        await axios.get(`http://localhost:8000/api/allcategory`).then(({ data }) => {
+        await axios.get(`/allcategory`).then(({ data }) => {
           setCategories(data.categories)
 
           console.log(categories);
@@ -43,11 +43,11 @@ export default function EditCategory() {
     }
 
     const fetchCategory = async () => {
-      await axios.get(`http://localhost:8000/api/categories/${id}`).then(({ data }) => {
+      await axios.get(`/categories/${id}`).then(({ data }) => {
         const { name, slug, parent_id } = data.category
         setName(name)
         setSlug(slug)
-        setParentId(parent_id)
+        setParentCategory(parent_id ? String(parent_id) : "")
       }).catch(({ response: { data } }) => {
         Swal.fire({
           text: data.message,
@@ -66,7 +66,7 @@ export default function EditCategory() {
    
    
 
-    await axios.post(`http://localhost:8000/api/categories/${id}`, formData).then(({ data }) => {
+    await axios.post(`/categories/${id}`, formData).then(({ data }) => {
       Swal.fire({
         icon: "success",
         text: data.message

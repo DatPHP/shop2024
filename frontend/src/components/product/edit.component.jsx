@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom'
-import axios from 'axios';
+import axios from '../../axios';
 import Swal from 'sweetalert2';
+import { getStorageUrl } from '../../utils/apiUrl';
 import {
   Card,
   Input,
@@ -31,7 +32,7 @@ export default function EditProduct() {
   }, [])
 
   const fetchProduct = async () => {
-    await axios.get(`http://localhost:8000/api/products/${id}`).then(({ data }) => {
+    await axios.get(`/products/${id}`).then(({ data }) => {
       const { title, description, image, price, active, category_id } = data.product
       setTitle(title)
       setDescription(description)
@@ -49,7 +50,7 @@ export default function EditProduct() {
   }
 
   const fetchCategories = async () => {
-    await axios.get(`http://localhost:8000/api/allcategory`).then(({ data }) => {
+    await axios.get(`/allcategory`).then(({ data }) => {
       setCategories(data.categories)
     }).catch((error) => {
       console.error('Error fetching categories:', error)
@@ -94,7 +95,7 @@ export default function EditProduct() {
       formData.append('image', image)
     }
 
-    await axios.post(`http://localhost:8000/api/products/${id}`, formData).then(({ data }) => {
+    await axios.post(`/products/${id}`, formData).then(({ data }) => {
       Swal.fire({
         icon: "success",
         text: data.message
@@ -208,7 +209,7 @@ export default function EditProduct() {
                       ))}
                     </select>
 
-                    {!selectedFile && image && <img className="h-auto max-w-lg rounded-lg" width="100px" src={`http://localhost:8000/storage/product/image/${image}`} />}
+                    {!selectedFile && image && <img className="h-auto max-w-lg rounded-lg" width="100px" src={getStorageUrl(`product/image/${image}`)} />}
                     {selectedFile && <img className="h-auto max-w-lg rounded-lg" width="100px" src={selectedFile.preview} />}
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="image">Upload file</label>
                     <input

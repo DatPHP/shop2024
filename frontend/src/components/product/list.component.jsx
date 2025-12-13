@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
 import axios from "../../axios";
 import Swal from "sweetalert2";
+import { getStorageUrl } from "../../utils/apiUrl";
 
 export default function List() {
   const [products, setProducts] = useState([]);
@@ -146,7 +147,7 @@ export default function List() {
                                                 {row.description}
                                             </td>
                                             <td className="px-6 py-4">
-                                                <img width="50px" src={`http://localhost:8000/storage/product/image/${row.image}`} alt={row.title} />
+                                                <img width="50px" src={getStorageUrl(`product/image/${row.image}`)} alt={row.title} />
                                             </td>
                                             <td className="px-6 py-4">
                                                 {row.price}
@@ -241,7 +242,7 @@ export default function List() {
                     <td className="px-6 py-4 text-sm text-gray-900">
                       <img
                         width="50px"
-                        src={`http://localhost:8000/storage/product/image/${product.image}`}
+                        src={getStorageUrl(`product/image/${product.image}`)}
                         alt={product.title}
                       />
                     </td>

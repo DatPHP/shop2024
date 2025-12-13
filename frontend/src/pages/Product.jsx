@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../axios';
 import Swal from 'sweetalert2'
 
 export default function Product() {
@@ -10,7 +10,7 @@ export default function Product() {
     }, [])
 
     const fetchProducts = async () => {
-        await axios.get(`http://localhost:8000/api/products`).then(({ data }) => {
+        await axios.get(`/products`).then(({ data }) => {
             setProducts(data)
         })
     }
@@ -32,7 +32,7 @@ export default function Product() {
             return;
         }
 
-        await axios.delete(`http://localhost:8000/api/products/${id}`).then(({ data }) => {
+        await axios.delete(`/products/${id}`).then(({ data }) => {
             Swal.fire({
                 icon: "success",
                 text: data.message

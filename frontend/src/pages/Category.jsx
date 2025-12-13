@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../axios';
 import Swal from 'sweetalert2';
 import { Button } from "@material-tailwind/react";
 
@@ -15,7 +15,7 @@ export default function Category() {
     }, [])
 
     const fetchCategories = async () => {
-        await axios.get(`http://localhost:8000/api/categories`).then(({ data }) => {
+        await axios.get(`/categories`).then(({ data }) => {
             setCategories(data)
         })
     }
@@ -37,7 +37,7 @@ export default function Category() {
             return;
         }
 
-        await axios.delete(`http://localhost:8000/api/categories/${id}`).then(({ data }) => {
+        await axios.delete(`/categories/${id}`).then(({ data }) => {
             Swal.fire({
                 icon: "success",
                 text: data.message
