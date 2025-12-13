@@ -1,23 +1,29 @@
-FROM php:8.2-fpm
+FROM php:8.2-apache
+
+# Enable Apache rewrite
+RUN a2enmod rewrite
 
 # Install system deps
 RUN apt-get update && apt-get install -y \
-    git unzip libzip-dev \
-    && docker-php-ext-install pdo pdo_mysql zip
+    git unzip libzip-dev libpng-dev libonig-dev libxml2-dev \
+    && docker-php-ext-install pdo_mysql mbstring zip exif pcntl
 
-# Install composer
+# Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# Set working dir
 WORKDIR /var/www/html
 
 # Copy source
 COPY . .
 
-# Install dependencies (KHÔNG artisan)
-RUN composer install --no-dev --optimize-autoloader
-
-# Permissions
+# Laravel permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-EXPOSE 9000
-CMD ["php-fpm"]
+# Install PHP deps (❌ KHÔNG key:generate)
+RUN composer install --no-dev --optimize-autoloader --no-scripts
+
+# Apache config
+COPY ./docker/apache.conf /etc/apache2/sites-available/000-default.conf
+
+EXPOSE 80
