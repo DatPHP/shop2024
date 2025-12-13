@@ -19,7 +19,13 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    // 'allowed_origins' => ['*'],
+
+    'allowed_origins' => [
+        '*',
+    'https://shop2024.vercel.app',
+    'http://localhost:3000',
+    ],
 
     'allowed_origins_patterns' => [],
 
