@@ -9,9 +9,11 @@ export const getBaseUrl = () => {
 	if (import.meta.env.VITE_API_URL) {
 		return import.meta.env.VITE_API_URL;
 	}
+
+	const realUrl = 'https://shop2024.onrender.com';
 	
 	// Fallback: extract from axios instance or use default
-	const baseURL = axios.defaults.baseURL || 'http://localhost:8000/api';
+	const baseURL = axios.defaults.baseURL || realUrl + '/api';
 	// Remove /api suffix if present
 	return baseURL.replace('/api', '');
 };
