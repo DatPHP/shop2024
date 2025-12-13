@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-const realUrl = env.VITE_API_URL;
+const realUrl = 'https://shop2024.onrender.com';
 // Get base URL from environment variable or use default
 const getBaseURL = () => {
 	// VITE_API_URL should be the base URL without /api (e.g., http://localhost:8000)
