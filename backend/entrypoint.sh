@@ -2,7 +2,6 @@
 set -e
 
 # 1. Generate app key nếu chưa có
-php artisan key:generate --force
 
 # 2. Chạy migration
 php artisan migrate --force
