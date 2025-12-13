@@ -40,4 +40,10 @@ COPY ./docker/apache.conf /etc/apache2/sites-available/000-default.conf
 EXPOSE 80
 
 # Command khởi chạy Apache
-CMD ["apache2-foreground"]
+# CMD ["apache2-foreground"]
+# Copy entrypoint script vào container
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Khởi chạy container bằng entrypoint
+ENTRYPOINT ["/entrypoint.sh"]
