@@ -19,11 +19,11 @@ return [
 
     'allowed_methods' => ['*'],
 
-    // 'allowed_origins' => ['*'],
-
+    // You must NOT use '*' when supports_credentials is true.
+    // List your SPA and API domains explicitly.
     'allowed_origins' => [
-        '*',
-    'https://shop2024.vercel.app'
+        'https://shop2024.vercel.app',
+        'https://shop2024.onrender.com',
     ],
 
     'allowed_origins_patterns' => [],

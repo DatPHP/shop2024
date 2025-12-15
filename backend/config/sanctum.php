@@ -17,8 +17,9 @@ return [
 
     'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', sprintf(
         '%s%s',
-        'SANCTUM_STATEFUL_DOMAINS=https://shop2024.onrender.com',
-        'localhost,::1,https://shop2024.onrender.com',
+        // Default local / dev domains
+        'localhost,localhost:3000,127.0.0.1,127.0.0.1:8000,::1,',
+        // Current application URL (production) – will typically be your Render app
         Sanctum::currentApplicationUrlWithPort()
     ))),
 
