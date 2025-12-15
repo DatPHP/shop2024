@@ -23,8 +23,7 @@ return [
 
     'allowed_origins' => [
         '*',
-    'https://shop2024.vercel.app',
-    'http://localhost:3000',
+    'https://shop2024.vercel.app'
     ],
 
     'allowed_origins_patterns' => [],
